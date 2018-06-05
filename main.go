@@ -5,8 +5,8 @@ import (
 	"html/template"
 	"os"
 
-	"github.com/mlabouardy/nexus-cli/registry"
 	"github.com/urfave/cli"
+	"github.com/wilbeibi/nexus-cli/registry"
 )
 
 const (
