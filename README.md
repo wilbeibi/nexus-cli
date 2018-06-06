@@ -1,5 +1,5 @@
-[![CircleCI](https://circleci.com/gh/mlabouardy/nexus-cli.svg?style=svg)](https://circleci.com/gh/mlabouardy/nexus-cli) [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
-
+[![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
+[![CircleCI](https://circleci.com/gh/wilbeibi/nexus-cli.svg?style=svg)](https://circleci.com/gh/wilbeibi/nexus-cli)
 <div align="center">
 <img src="logo.png" width="60%"/>
 </div>
