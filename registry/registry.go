@@ -4,19 +4,19 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/BurntSushi/toml"
 	"net/http"
 	"os"
+
+	"github.com/BurntSushi/toml"
 )
 
 const ACCEPT_HEADER = "application/vnd.docker.distribution.manifest.v2+json"
-const CREDENTIALS_FILE = ".credentials"
+const CREDENTIALS_FILE = "~/.nexus-credentials"
 
 type Registry struct {
-	Host       string `toml:"nexus_host"`
-	Username   string `toml:"nexus_username"`
-	Password   string `toml:"nexus_password"`
-	Repository string `toml:"nexus_repository"`
+	Host     string `toml:"nexus_host"`
+	Username string `toml:"nexus_username"`
+	Password string `toml:"nexus_password"`
 }
 
 type Repositories struct {
@@ -57,7 +57,7 @@ func NewRegistry() (Registry, error) {
 func (r Registry) ListImages() ([]string, error) {
 	client := &http.Client{}
 
-	url := fmt.Sprintf("%s/repository/%s/v2/_catalog", r.Host, r.Repository)
+	url := fmt.Sprintf("%s/v2/_catalog", r.Host)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err
@@ -84,7 +84,7 @@ func (r Registry) ListImages() ([]string, error) {
 func (r Registry) ListTagsByImage(image string) ([]string, error) {
 	client := &http.Client{}
 
-	url := fmt.Sprintf("%s/repository/%s/v2/%s/tags/list", r.Host, r.Repository, image)
+	url := fmt.Sprintf("%s/v2/%s/tags/list", r.Host, image)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err
@@ -112,7 +112,7 @@ func (r Registry) ImageManifest(image string, tag string) (ImageManifest, error)
 	var imageManifest ImageManifest
 	client := &http.Client{}
 
-	url := fmt.Sprintf("%s/repository/%s/v2/%s/manifests/%s", r.Host, r.Repository, image, tag)
+	url := fmt.Sprintf("%s/v2/%s/manifests/%s", r.Host, image, tag)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return imageManifest, err
@@ -143,7 +143,7 @@ func (r Registry) DeleteImageByTag(image string, tag string) error {
 	}
 	client := &http.Client{}
 
-	url := fmt.Sprintf("%s/repository/%s/v2/%s/manifests/%s", r.Host, r.Repository, image, sha)
+	url := fmt.Sprintf("%s/v2/%s/manifests/%s", r.Host, image, sha)
 	req, err := http.NewRequest("DELETE", url, nil)
 	if err != nil {
 		return err
@@ -169,7 +169,7 @@ func (r Registry) DeleteImageByTag(image string, tag string) error {
 func (r Registry) getImageSHA(image string, tag string) (string, error) {
 	client := &http.Client{}
 
-	url := fmt.Sprintf("%s/repository/%s/v2/%s/manifests/%s", r.Host, r.Repository, image, tag)
+	url := fmt.Sprintf("%s/v2/%s/manifests/%s", r.Host, image, tag)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return "", err

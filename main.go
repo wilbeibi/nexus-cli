@@ -13,8 +13,7 @@ const (
 	CREDENTIALS_TEMPLATES = `# Nexus Credentials
 nexus_host = "{{ .Host }}"
 nexus_username = "{{ .Username }}"
-nexus_password = "{{ .Password }}"
-nexus_repository = "{{ .Repository }}"`
+nexus_password = "{{ .Password }}"`
 )
 
 func main() {
@@ -26,6 +25,10 @@ func main() {
 		cli.Author{
 			Name:  "Mohamed Labouardy",
 			Email: "mohamed@labouardy.com",
+		},
+		cli.Author{
+			Name:  "Hongyi Shen",
+			Email: "wilbeibi@gmail.com",
 		},
 	}
 	app.Commands = []cli.Command{
@@ -103,34 +106,30 @@ func main() {
 }
 
 func setNexusCredentials(c *cli.Context) error {
-	var hostname, repository, username, password string
+	var hostname, username, password string
 	fmt.Print("Enter Nexus Host: ")
 	fmt.Scan(&hostname)
-	fmt.Print("Enter Nexus Repository Name: ")
-	fmt.Scan(&repository)
 	fmt.Print("Enter Nexus Username: ")
 	fmt.Scan(&username)
 	fmt.Print("Enter Nexus Password: ")
 	fmt.Scan(&password)
 
 	data := struct {
-		Host       string
-		Username   string
-		Password   string
-		Repository string
+		Host     string
+		Username string
+		Password string
 	}{
 		hostname,
 		username,
 		password,
-		repository,
 	}
 
-	tmpl, err := template.New(".credentials").Parse(CREDENTIALS_TEMPLATES)
+	tmpl, err := template.New("~/.nexus-credentials").Parse(CREDENTIALS_TEMPLATES)
 	if err != nil {
 		return cli.NewExitError(err.Error(), 1)
 	}
 
-	f, err := os.Create(".credentials")
+	f, err := os.Create(os.Getenv("HOME") + "/.nexus-credentials")
 	if err != nil {
 		return cli.NewExitError(err.Error(), 1)
 	}
