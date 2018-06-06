@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"html/template"
 	"os"
+	"strings"
 
 	"github.com/urfave/cli"
 	"github.com/wilbeibi/nexus-cli/registry"
@@ -109,6 +110,9 @@ func setNexusCredentials(c *cli.Context) error {
 	var hostname, username, password string
 	fmt.Print("Enter Nexus Host: ")
 	fmt.Scan(&hostname)
+	if !strings.HasPrefix(hostname, "http") {
+		hostname = "http://" + hostname
+	}
 	fmt.Print("Enter Nexus Username: ")
 	fmt.Scan(&username)
 	fmt.Print("Enter Nexus Password: ")

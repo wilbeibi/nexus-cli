@@ -11,7 +11,7 @@ import (
 )
 
 const ACCEPT_HEADER = "application/vnd.docker.distribution.manifest.v2+json"
-const CREDENTIALS_FILE = "~/.nexus-credentials"
+var CREDENTIALS_FILE = os.Getenv("HOME") + "/.nexus-credentials"
 
 type Registry struct {
 	Host     string `toml:"nexus_host"`
