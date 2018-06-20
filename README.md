@@ -22,7 +22,7 @@ In release there are available downloads for the latest version of Nexus CLI (v0
 To install the library and command line program, use the following:
 
 ```
-go get -u github.com/mlabouardy/nexus-cli
+go get -u github.com/wilbeibi/nexus-cli
 ```
 
 ## Available Commands
